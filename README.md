@@ -1,24 +1,22 @@
-# UNNAMED - CYBERCLASS     
+# EXTRA CREDIT - CYBERCLASS
 
-<p align="center">
-  <img src="image/a.png"  alt="meo coding logo" style="height: 100px; width:100px;"  />
-</p>
+## Contents
 
-<p align="center"> <b> Write up by: Zunn</b></p> 
-
+- [Introduction](#Introduction)
+---
 
 - Công cụ em sử dụng để debug là gdb (plugin peda)
 - Mã khai khác em viết bằng code python .
 
-## INTRODUCTION
+## Introduction
 
-![alt text](image/de.png "Title")
+![alt text](de.png "Title")
 
-![alt text](image/2.png "Title")
+![alt text](2.png "Title")
 
 Đề bài cho ta 1 file executable và được chạy dưới quyền suid, nhiệm vụ phải lon ton lên root để tìm được flag. Đầu tiên chạy file executable xem có gì trong đó nào...
 
-![alt text](image/3.png "Title")
+![alt text](3.png "Title")
 
 Hmmmm.....có vẻ như chương trình chỉ in ra lại những gì đã được nhập vào và không còn thông tin nào thêm. Tuy nhiên, ta sẽ bắt đầu tìm hiểu file binary bằng cách in ra xâu có độ dài khá lớn.
 
@@ -26,7 +24,7 @@ Hmmmm.....có vẻ như chương trình chỉ in ra lại những gì đã đư�
   python3 -c "print( 'a' * 10000)" | ./secret
 ```
 
-![alt text](image/4.png "Title")
+![alt text](4.png "Title")
 
 `Segmentation fault` :3 Quả nhiên secret bị crash với test của chúng ta. Dễ dàng nhận thấy lỗ hổng stack base `buffer overflow` rất rõ ràng. 
 
@@ -45,21 +43,21 @@ python3 a.py> a.txt
 
 Giờ thì mở gdb lên để phân tích.
 
-![alt text](image/5.png "Title")
+![alt text](5.png "Title")
 
 Nhìn vào ta thấy chỗ tốt nhất để break point là leave trước return istruction. Dòng thứ hai từ dưới main lên.
 
-![alt text](image/6.png "Title")
+![alt text](6.png "Title")
 
 Sau khi run, dựa vào info name ta xác định được đây là [64-bit Stack-based Buffer Overflow](https://www.ired.team/offensive-security/code-injection-process-injection/binary-exploitation/64-bit-stack-based-buffer-overflow) và `rip at 0x7fffffffe5b8`
 
 Để tìm buffer’s size, một trong những cách ta có thể dùng sẽ lấy `rip - rsp` . Dùng câu lệnh sau để show 24wx từ vị trí đầu stack.
 
-```
+```r
 x/24wx $rsp
 ```
 
-![alt text](image/8.png "Title")
+![alt text](8.png "Title")
 
 Dòng đầu tiên ta thấy địa chỉ `0x7fffffffe1b0` mang giá trị `0x61616161` : kí tự `a` bé. Đây chính là đầu vào của chúng ta, yeye đã biết địa chỉ đầu stack giờ ta tính buffer’s size.
 
@@ -67,7 +65,7 @@ Dòng đầu tiên ta thấy địa chỉ `0x7fffffffe1b0` mang giá trị `0x61
  p/d 0x7fffffffe5b8 - 0x7fffffffe1b0
 ```
 
-![alt text](image/9.png "Title")
+![alt text](9.png "Title")
 
 ## SHELLCODE
 
@@ -110,7 +108,7 @@ https://bobbyhadz.com/blog/python-typeerror-can-only-concatenate-str-not-bytes-t
 
 Giờ chúng ta sẽ gdb để kiểm tra và chọn địa chỉ của NOP ( tốt nhất là nó nằm ở giữa )
 
-![alt text](image/10.png "Title")
+![alt text](10.png "Title")
 
 Hmmmmmmmm.... chúng ta đang lỗi gì đó dấu '`>`' không chuyển được kí tư utf-8. Giờ ta sẽ nhập xuất file xem như thế nào
 
@@ -126,20 +124,20 @@ file.write(p)
 file.close()
 ```
 
-![alt text](image/12.png "Title")
+![alt text](12.png "Title")
 
 Excute file python thoi -> `python3 a.py > a.txt` và xác định NOP.
 
-![alt text](image/13.png "Title")
+![alt text](13.png "Title")
 
 Ye rất đúng theo suy nghĩ của chúng ta. Vì shell code chúng ta nằm ở cuối nên ta sẽ in từ vị trí rsp
 
-```
+```r
 (gdb) x/100xg $rbp
 ```
-![alt text](image/14.png "Title")
+![alt text](14.png "Title")
 
-![alt text](image/15.png "Title")
+![alt text](15.png "Title")
 
 Ta sẽ lấy NOP ở giữa  `0x7fffffffe710` để tránh chênh lệch khi chương trình thực thi. Sau khi có đầy đủ mọi thứ ta sẽ hoàn chỉnh chương trình như sau:
 
@@ -162,11 +160,11 @@ Tiến hành chạy lại secret xem có lên được shell hay không?
  (cat a.txt ; cat) | ./secret
  ```
 
-![alt text](image/16.png "Title")
+![alt text](16.png "Title")
 
 Okie, code exploit đã chạy và chúng ta đạ execute shellcode thành công. Thế là ta đã thành công lkhai tháo lỗi Buffer Overflow rồi. Giờ lấy flag thoiii!!
 
-![alt text](image/17.png "Title")
+![alt text](17.png "Title")
 
 Ta đã leo lên root nên chỉ cần  `cd /root` ta sẽ thấy file tên `flag-whoa.txt` . OHHHH `cat flag-whoa.txt` ta được flagggg
 
