@@ -121,7 +121,7 @@ print (padding + RIP + NOP + shellcode)
 https://bobbyhadz.com/blog/python-typeerror-can-only-concatenate-str-not-bytes-to-str#:~:text=The%20Python%20%22TypeError%3A%20can%20only,string%20before%20concatenating%20the%20strings
 )
 
-Giờ chúng ta sẽ gdb để kiểm tra và chọn địa chỉ của NOP ( tốt nhất là nó nằm ở giữa )
+Giờ chúng ta sẽ gdb để kiểm tra và chọn địa chỉ của NOP ( tốt nhất là nó nằm ở giữa bởi trong quá trình chạy chương trình, địa chỉ có thể chênh lệch khiến NOP mang địa chỉ không theo mong muốn)
 
 ![alt text](image/10.png "Title")
 
