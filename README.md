@@ -15,6 +15,7 @@
   - [shellcode](#shellcode)
   - [Nopsled](#nopsled)
 - [Flag](#flag)
+- [Links](#links)
 
 ## **Introduction**
 
@@ -188,3 +189,14 @@ Ta đã leo lên root nên chỉ cần  `cd /root` ta sẽ thấy file tên `fla
  ```r
  CYBERCLASS{WHOA-BAN-DINK-KOUT-WA-CHUC-MUNG-BAN-!!!}
  ```
+
+## **Links**
+
+Vì đây là lần đầu em viết write-up nên em đã tham khảo các nguồn sau:
+
+[First Exploit! Buffer Overflow with Shellcode - bin 0x0E](https://www.youtube.com/watch?v=HSlhY4Uy8SA)
+[Buffer Overflow Examples](https://0xrick.github.io/binary-exploitation/bof5/#stack5)
+[Buffer Overflow - in a nutshell](https://viblo.asia/p/buffer-overflow-in-a-nutshell-m68Z0ox6KkG)
+[Shellcode là gì?](https://vietnix.vn/shellcode-la-gi/)
+[Khai thác Buffer Overflow – Control EIP (Nopsled + Shellcode)](https://hoccyber.com/buffer-overflow-eip/)
+
