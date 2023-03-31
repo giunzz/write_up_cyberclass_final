@@ -19,8 +19,8 @@
 
 ## **Introduction**
 
-- Công cụ em sử dụng để debug là *gdb (plugin peda)*
-- Mã khai khác em viết bằng code *python* .
+- Công cụ sử dụng để debug là *gdb (plugin peda)*
+- Mã khai khác viết bằng code *python* .
 
 ![alt text](image/de.png "Title")
 
